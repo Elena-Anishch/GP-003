@@ -12,6 +12,10 @@ APPLICATION DATA
 // "name" - name of the index
 // "subindices" - subsindices related to an index 
 
+/*🔥 This map‘s indices data are from the Excel spreadsheet
+Each Entry connects:
+- id: Code from the Excel, the acronym of the Dimensions (e.g., SP(System Performance), EDG(Economic Development and Growth), TR (transition Readiness) 
+-  geojsonKey: refer to the tileset of each dimension*/
 let app = {
 	indices: [
 		{
@@ -248,6 +252,7 @@ let app = {
 
 	// Countries data for the application
 	
+	/*🔥 Could add more African Countries here*/
 	countries: [
 		{
 			name: "Kenya",
@@ -291,6 +296,11 @@ let app = {
 	
 	
     // Color legend for the application 
+	/*🔥 keep track of whether the country-level GeoJSON data has already been loaded from the map.
+	and stored it into app.countries[i].geojson?*/
+	countryGeojsonIsLoaded: false,
+	
+	/*🔥 Legend */
 	colorLegend: {
 		labels: [ '0-24 Poor ', '25-49 Low', '50-74 Moderate',  '75-89 Good', '> 90 Excellent' ],
 		colors: [    '#bd0026',   '#9B4D00',        '#FFA500',     '#FFFF00',        '#32CD32' ],
@@ -465,6 +475,8 @@ map.on('load', () => {
 	
 	// select and display the first index layer by default 
 	document.getElementById('layercheck_' + app.indices[0].id).click();
+	// select the first index
+	//document.getElementById('layercheck_' + app.indices[0].id).click();
 });
 
 
@@ -702,6 +714,14 @@ function updateComparisonTable() {
 }
 
 // Create index selection radio buttons for each index in the app.indices array
+// 🔥 Add instructional line at top of index menu
+const instructionLine = document.createElement('div');
+instructionLine.className = 'text-muted small pb-2 ps-1';
+instructionLine.textContent = 'Select an Index';
+document.getElementById('index-select-menu').appendChild(instructionLine);
+// end
+
+// Create index selection radio buttons
 app.indices.forEach(index => {
 	let html = `
 		<div class="form-check mb-2">
@@ -742,11 +762,22 @@ app.countries.forEach(country => {
 // Add interactivity to the user controls when the DOM content is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
 	// Index selector drop-down: show the selected index name in the box
-	const indexSelectBtn = document.getElementById("select-index");
+	//edit:
+	// const indexSelectBtn = document.getElementById("select-index");
+	// document.querySelectorAll(".index-layer-checkbox").forEach(radio => {
+	// 	radio.addEventListener("change", function () {
+	// 		// set the toggle button text to the selected radio button text ()
+	// 		indexSelectBtn.textContent = this.nextElementSibling.textContent.trim();;
+	// 	});
+	// });
+	//update:
+	const indexLabel = document.getElementById("selected-index-label");
+
 	document.querySelectorAll(".index-layer-checkbox").forEach(radio => {
 		radio.addEventListener("change", function () {
 			// set the toggle button text to the selected radio button' lebel
 			indexSelectBtn.textContent = this.nextElementSibling.textContent.trim();;
+		  document.getElementById("selected-index-label").textContent = this.nextElementSibling.textContent.trim();
 		});
 	});
 
@@ -785,6 +816,26 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 	
 	updateButtonText(); // Update button text based on the selection
+	//🔥 Download button test
+	// add all other countries' xlsx file inside the country folder, with formating as [country].xlsx. then the file could be download by the user
+	const countries = ["Nigeria", "Kenya", "Rwanda", "Ethiopia", "Tanzania", "Ghana", "Nigeria", "Senegal"]; // Add all your actual file names here
+  	const downloadMenu = document.getElementById("downloadMenu");
+
+  	countries.forEach(country => {
+		const listItem = document.createElement("li");
+
+		const link = document.createElement("a");
+		link.className = "dropdown-item";
+		link.href = `./countries/${country}.xlsx`;
+		link.download = `${country}.xlsx`;
+		link.textContent = country;
+
+		listItem.appendChild(link);
+		downloadMenu.appendChild(listItem);
+	});
+	// 🔥
+
+	updateButtonText(); // Initial button update
 
 	// "Show comparison table" button click handler
 	document.getElementById('toggle-compare').addEventListener('click', function() {
@@ -796,6 +847,40 @@ document.addEventListener("DOMContentLoaded", function () {
 	setTimeout(function() {
 		document.querySelector(".page-loader").classList.add("init");
 	}, 2200);
+
+	// 🔥 Turn page button test
+	let currentPage = 0;
+	const pages = document.querySelectorAll('.instruction-page');
+	const pageNumber = document.getElementById('pageNumber');
+	const prevPageBtn = document.getElementById('prevPage');
+	const nextPageBtn = document.getElementById('nextPage');
+
+	function updateInstructionPage() {
+		pages.forEach((page, i) => {
+			page.style.display = i === currentPage ? 'block' : 'none';
+		});
+
+		pageNumber.textContent = `${currentPage + 1} of ${pages.length}`;
+		prevPageBtn.disabled = currentPage === 0;
+		nextPageBtn.disabled = currentPage === pages.length - 1;
+	}
+
+	prevPageBtn.addEventListener('click', () => {
+		if (currentPage > 0) {
+			currentPage--;
+			updateInstructionPage();
+		}
+	});
+
+	nextPageBtn.addEventListener('click', () => {
+		if (currentPage < pages.length - 1) {
+			currentPage++;
+			updateInstructionPage();
+		}
+	});
+
+	updateInstructionPage(); // Initialize on load
+
 });
 
 
