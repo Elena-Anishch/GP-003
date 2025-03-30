@@ -6,6 +6,10 @@ Adding elements and interactivity to the map (JavaScript legend and events)
 /*--------------------------------------------------------------------
 APPLICATION DATA
 --------------------------------------------------------------------*/
+/*🔥 This map‘s indices data are from the Excel spreadsheet
+Each Entry connects:
+- id: Code from the Excel, the acronym of the Dimensions (e.g., SP(System Performance), EDG(Economic Development and Growth), TR (transition Readiness) 
+-  geojsonKey: refer to the tileset of each dimension*/
 let app = {
 	indices: [
 		{
@@ -239,7 +243,7 @@ let app = {
 			name: 'Composite Index CCS'
 		}
 	],
-	
+	/*🔥 Could add more African Countries here*/
 	countries: [
 		{
 			name: "Kenya",
@@ -278,8 +282,11 @@ let app = {
 		}
 	],
 	
+	/*🔥 keep track of whether the country-level GeoJSON data has already been loaded from the map.
+	and stored it into app.countries[i].geojson?*/
 	countryGeojsonIsLoaded: false,
 	
+	/*🔥 Legend */
 	colorLegend: {
 		labels: [ '0-24 Poor ', '25-49 Low', '50-74 Moderate',  '75-89 Good', '> 90 Excellent' ],
 		colors: [    '#bd0026',   '#9B4D00',        '#FFA500',     '#FFFF00',        '#32CD32' ],
@@ -712,6 +719,24 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 	
+	//🔥 Download button test
+	const countries = ["Nigeria", "Kenya", "Ethiopia"]; // Add all your actual file names here
+  	const downloadMenu = document.getElementById("downloadMenu");
+
+  	countries.forEach(country => {
+		const listItem = document.createElement("li");
+
+		const link = document.createElement("a");
+		link.className = "dropdown-item";
+		link.href = `./countries/${country}.xlsx`;
+		link.download = `${country}.xlsx`;
+		link.textContent = country;
+
+		listItem.appendChild(link);
+		downloadMenu.appendChild(listItem);
+	});
+	// 🔥
+
 	updateButtonText(); // Initial button update
 
 	// "Show comparison table" button click handler
@@ -724,6 +749,40 @@ document.addEventListener("DOMContentLoaded", function () {
 	setTimeout(function() {
 		document.querySelector(".page-loader").classList.add("init");
 	}, 2200);
+
+	// 🔥 Turn page button test
+	let currentPage = 0;
+	const pages = document.querySelectorAll('.instruction-page');
+	const pageNumber = document.getElementById('pageNumber');
+	const prevPageBtn = document.getElementById('prevPage');
+	const nextPageBtn = document.getElementById('nextPage');
+
+	function updateInstructionPage() {
+		pages.forEach((page, i) => {
+			page.style.display = i === currentPage ? 'block' : 'none';
+		});
+
+		pageNumber.textContent = `${currentPage + 1} of ${pages.length}`;
+		prevPageBtn.disabled = currentPage === 0;
+		nextPageBtn.disabled = currentPage === pages.length - 1;
+	}
+
+	prevPageBtn.addEventListener('click', () => {
+		if (currentPage > 0) {
+			currentPage--;
+			updateInstructionPage();
+		}
+	});
+
+	nextPageBtn.addEventListener('click', () => {
+		if (currentPage < pages.length - 1) {
+			currentPage++;
+			updateInstructionPage();
+		}
+	});
+
+	updateInstructionPage(); // Initialize on load
+
 });
 
 
