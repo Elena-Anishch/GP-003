@@ -291,14 +291,14 @@ let app = {
 		}
 	],
 	
-	// Flag to track if country geojson is loaded   - ????
+	// Flag to track if country geojson is loaded   - ???? - comparison table will populate once this turns TRUE
 	countryGeojsonIsLoaded: false,
 	
 	
     // Color legend for the application 
 	/*🔥 keep track of whether the country-level GeoJSON data has already been loaded from the map.
 	and stored it into app.countries[i].geojson?*/
-	countryGeojsonIsLoaded: false,
+	//countryGeojsonIsLoaded: false,
 	
 	/*🔥 Legend for 5 data breaks */ 
 	colorLegend: {
@@ -376,7 +376,7 @@ function getColorLegendInfo(value) {
 			};
 		}
 	}
-	return { color: '#ccc', label: 'No Data' }; // Default if value is missing ---???
+	return { color: '#ccc', label: 'No Data' }; // Default if value is missing , in case there is a mistake in data, coding error, in legend levels and arrays 
 }
 
 /*--------------------------------------------------------------------
@@ -422,7 +422,7 @@ function mapAddLayer(layerId, geojsonProperty) {
 	
 	// Add each color level and its corresponding color from the color legend
 	for (let i = 0; i < app.colorLegend.colors.length; i++) {
-		// all arrays in app.colorLegend have the same length,  ----????
+		// all arrays in app.colorLegend have the same length, /// if 4 colors 4 labels 
 		// so can use same i to access them all
 		if (app.colorLegend.levels[i] != 0) // skip '0' level
 			colorLevelparam.push(app.colorLegend.levels[i]);
@@ -483,8 +483,10 @@ map.on('load', () => {
 		mapZoom();
 	});
 	
-	// select and display the first index layer by default 
-	document.getElementById('layercheck_' + app.indices[0].id).click();
+	// select and display the first index layer by default -this is where the selecte index is displayed on load ( first one)
+	document.getElementById('layercheck_' + app.indices[0].id).click();  // 0 indicates the first layer, you can select any number 
+
+
 	// select the first index
 	//document.getElementById('layercheck_' + app.indices[0].id).click();
 });
@@ -589,7 +591,7 @@ function selectIndex(e, id) {
 	if (checkbox.checked) {
 		map.setLayoutProperty(id, 'visibility', 'visible');
 		app.selectedIndexId = id;
-		mapZoom();    ///// ?????? does it actually do anything????
+		mapZoom();    ///// ?????? does it actually do anything???? reset to default zoom when new index selected 
 	}
 }
 
@@ -795,7 +797,7 @@ instructionLine.textContent = 'Select an Index';
 document.getElementById('index-select-menu').appendChild(instructionLine);
 // end
 
-// Create index selection radio buttons
+// Create index selection radio buttons   - 
 app.indices.forEach(index => {
 	let html = `
 		<div class="form-check mb-2">
@@ -920,7 +922,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Loader animation: hide after a timeout
 	setTimeout(function() {
 		document.querySelector(".page-loader").classList.add("init");
-	}, 2200);
+	}, 2200); // this is the time the loader is displayed for 
 
 	// 🔥 Turn page button test
 	let currentPage = 0;
