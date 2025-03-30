@@ -619,13 +619,13 @@ function updateComparisonTable() {
 	// Get the div where the comparison table will be inserted
 	const tableDiv = document.getElementById("compare");
 	
-	// / Clear any previous content in the comparison table and set a loading message
+	// Clear any previous content in the comparison table and set a loading message
 	tableDiv.innerHTML = '<h5 class="text-center">Comparison table: data not loaded</h5>'; 	
 	// Check if the necessary geojson data is loaded or if an index is selected
 	if (!app.countryGeojsonIsLoaded || app.selectedIndexId === null)
 		return; // If data or index isn't available, exit the function
 	
- // Find the selected index data based on the selected index ID
+	// Find the selected index data based on the selected index ID
 	let selectedIndex;
 	
 	for (var i = 0; i < app.indices.length; i++) {
@@ -652,11 +652,9 @@ function updateComparisonTable() {
 	// Begin building the table body
 	html += '<tbody>'
 	
-	 // First row: Add the selected index to the first column
+	// First row: Add the selected index to the first column
 	html += '<tr>'
 	html += `<th scope="row" class="text-start">${selectedIndex.name}</th>`
-	
-
 
 	// Loop through the selected countries and populate the table with values for the selected index
 	app.countries.forEach(country => {
@@ -669,7 +667,7 @@ function updateComparisonTable() {
 			else
 				val = val.toFixed(2);
 			
-				// Add a table cell with the value and corresponding color
+			// Add a table cell with the value and corresponding color
 			html += '<td class="position-relative">';
 			html += `<div style="background-color: ${color};" class="h-100 opacity-50 w-100 position-absolute start-0 top-0"></div>`;
 			html += `<div class="position-relative">${val}</div>`
@@ -683,7 +681,7 @@ function updateComparisonTable() {
 	if (selectedIndex.subindices){		
 		for (var i = 0; i < selectedIndex.subindices.length; i++) {
 			html += '<tr>'
-		html += `<td scope="row" class="text-start">${i + 1}. ${selectedIndex.subindices[i].name}</td>`
+			html += `<td scope="row" class="text-start">${i + 1}. ${selectedIndex.subindices[i].name}</td>`
 			app.countries.forEach(country => {
 				if (country.is_selected) {
 					let val = country.geojson[selectedIndex.subindices[i].geojsonKey];
@@ -706,12 +704,78 @@ function updateComparisonTable() {
 			html += '</tr>'
 		}
 	}
+
+	// ADD NEW ROWS: Population, Area, Population Density
+	// Population row
+	html += '<tr>';
+	html += `<td scope="row" class="text-start">Population</td>`;
+	app.countries.forEach(country => {
+		if (country.is_selected) {
+			let val = country.geojson["Africa_c_6"]; // Population field
+			
+			// If the value is undefined, set it to "--"
+			if (val == undefined || val == "") {
+				val = "--";
+			} else {
+				val = val.toLocaleString(); // Add a thousand separator for better readability
+			}
+			
+			html += '<td>';
+			html += `<div class="position-relative">${val}</div>`; // No background color
+			html += '</td>';
+		}
+	});
+	html += '</tr>';
+
+	// Area row
+	html += '<tr>';
+	html += `<td scope="row" class="text-start">Area (km²)</td>`;
+	app.countries.forEach(country => {
+		if (country.is_selected) {
+			let val = country.geojson["Africa_c31"]; // Area field
+			
+			// If the value is undefined, set it to "--"
+			if (val == undefined || val == "") {
+				val = "--";
+			} else {
+				val = val.toLocaleString(); // Add a thousand separator
+			}
+			
+			html += '<td>';
+			html += `<div class="position-relative">${val}</div>`; // No background color
+			html += '</td>';
+		}
+	});
+	html += '</tr>';
+
+	// Population Density row
+	html += '<tr>';
+	html += `<td scope="row" class="text-start">Population Density (per km²)</td>`;
+	app.countries.forEach(country => {
+		if (country.is_selected) {
+			let val = country.geojson["Africa_c32"]; // Population Density field
+			
+			// If the value is undefined, set it to "--"
+			if (val == undefined || val == "") {
+				val = "--";
+			} else {
+				val = val.toFixed(2); // Format to two decimal places
+			}
+			
+			html += '<td>';
+			html += `<div class="position-relative">${val}</div>`; // No background color
+			html += '</td>';
+		}
+	});
+	html += '</tr>';
+
 	// End the table body and table itself
 	html += '</tbody>'
 	html += '</table>'
-	 // Update the inner HTML of the table div with the newly generated HTML
+	// Update the inner HTML of the table div with the newly generated HTML
 	tableDiv.innerHTML = html;
 }
+
 
 // Create index selection radio buttons for each index in the app.indices array
 // 🔥 Add instructional line at top of index menu
