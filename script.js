@@ -698,10 +698,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	document.querySelectorAll(".index-layer-checkbox").forEach(radio => {
 		radio.addEventListener("change", function () {
-			indexLabel.textContent = this.nextElementSibling.textContent.trim();
+		  document.getElementById("selected-index-label").textContent = this.nextElementSibling.textContent.trim();
 		});
 	});
-
 
 	// Country selector drop-down: show number of selected countries in the box
 	const countrySelectBtn = document.getElementById("select-country");
