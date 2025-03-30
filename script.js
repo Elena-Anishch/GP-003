@@ -436,7 +436,7 @@ map.on('load', () => {
 	});
 	
 	// select the first index
-	document.getElementById('layercheck_' + app.indices[0].id).click();
+	//document.getElementById('layercheck_' + app.indices[0].id).click();
 });
 
 // Add click events to each map layer that show a popup
@@ -638,6 +638,13 @@ function updateComparisonTable() {
 	tableDiv.innerHTML = html;
 }
 
+// 🔥 Add instructional line at top of index menu
+const instructionLine = document.createElement('div');
+instructionLine.className = 'text-muted small pb-2 ps-1';
+instructionLine.textContent = 'Select an Index';
+document.getElementById('index-select-menu').appendChild(instructionLine);
+// end
+
 // Create index selection radio buttons
 app.indices.forEach(index => {
 	let html = `
@@ -678,13 +685,23 @@ app.countries.forEach(country => {
 // Add interactivity to the user controls
 document.addEventListener("DOMContentLoaded", function () {
 	// Index selector drop-down: show the selected index name in the box
-	const indexSelectBtn = document.getElementById("select-index");
+	//edit:
+	// const indexSelectBtn = document.getElementById("select-index");
+	// document.querySelectorAll(".index-layer-checkbox").forEach(radio => {
+	// 	radio.addEventListener("change", function () {
+	// 		// set the toggle button text to the selected radio button text ()
+	// 		indexSelectBtn.textContent = this.nextElementSibling.textContent.trim();;
+	// 	});
+	// });
+	//update:
+	const indexLabel = document.getElementById("selected-index-label");
+
 	document.querySelectorAll(".index-layer-checkbox").forEach(radio => {
 		radio.addEventListener("change", function () {
-			// set the toggle button text to the selected radio button text
-			indexSelectBtn.textContent = this.nextElementSibling.textContent.trim();;
+			indexLabel.textContent = this.nextElementSibling.textContent.trim();
 		});
 	});
+
 
 	// Country selector drop-down: show number of selected countries in the box
 	const countrySelectBtn = document.getElementById("select-country");
@@ -720,7 +737,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 	
 	//🔥 Download button test
-	const countries = ["Nigeria", "Kenya", "Ethiopia"]; // Add all your actual file names here
+	// add all other countries' xlsx file inside the country folder, with formating as [country].xlsx. then the file could be download by the user
+	const countries = ["Nigeria", "Kenya", "Rwanda", "Ethiopia", "Tanzania", "Ghana", "Nigeria", "Senegal"]; // Add all your actual file names here
   	const downloadMenu = document.getElementById("downloadMenu");
 
   	countries.forEach(country => {

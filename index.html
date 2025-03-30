@@ -56,7 +56,7 @@
         </div>
         <div class="dropdown dropdown-select-index col-xxl-2 text-start">
             <button id="select-index" class="btn w-100 btn-light dropdown-toggle text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="pe-3 d-block">Index not selected</span>
+                <span id="selected-index-label" class="pe-3 d-block">Select an Index</span>
             </button>
             <div id="index-select-menu" class="dropdown-menu w-100 p-2 p-xxl-3">
                 <!-- Radio buttons to show/hide Index layer will be here -->
@@ -131,18 +131,22 @@
                     <div class="instruction-page" style="display: block;">
                       <ol class="ps-4">
                         <li>
-                            Please zoom in to the East Coast of Africa, over Ethiopia, Kenya, and Tanzania for the best view of map functionality.
-                            <br>* The map will show layers only once zoomed in and once a layer is selected.
+                            Please zoom in to the East Coast of Africa, over Nigeria, Kenya, and Tanzania, for the best view of map functionality.
+                            <br><em><strong>Note:</strong> Index layers will only display once you zoom in and select an index layer.</em>
                         </li>
-                        <li>Please select an Index layer to view.</li>
-                        <li>Please select a country from the dropdown menu or select "all." Only seven countries have data available, and these are the ones listed in the dropdown.</li>
-                        <li>Once an index layer is selected, you may CLICK on a country, and a pop-up window will display the index value.</li>
-                        <li>Please note that only Kenya has a real index value. The index values for the other six countries are fictional.</li>
+                        <li>Please select an Index layer using the dropdown menu.</li>
+                        <li>Please select a country from the dropdown menu, or choose “All.” 
+                            <br><em><strong>Note:</strong> Only seven countries contain data, and only these countries are listed in the dropdown.</em>
+                        </li>
+                        <li>Please click on a country after selecting an index layer to view a pop-up with its corresponding index value.</li>
+                        <li>Please click download button to get the detailed excel file of each country to find how each sub-dimention and their relative indicators are being calculated.</li>
+                        <li><strong>Please note that only Nigeria has a real index value</strong>. The index values for the other six countries are fictional.</li>
                       </ol>
+                      <p class="small text-muted text-center w-100" style="font-size: 12px;"><em>Please click the right arrow for Methodology and Formula Page.</em></p>
                     </div>
                     <!-- 🔥 Page 2 -->
                     <div class="instruction-page" style="display: none;">
-                        <h5 class="fw-bold mb-2">Understanding Index Classification</h5>
+                        <h5 class="fw-bold mb-2">Methodology</h5>
                         <img src="methodology.jpg" class="img-fluid" alt="Index classification visual">
                       
                         <h5 class="fw-bold mb-2 mt-4">Determining Indicator Values</h5>
