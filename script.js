@@ -291,7 +291,7 @@ let app = {
 		}
 	],
 	
-	// Flag to track if country geojson is loaded
+	// Flag to track if country geojson is loaded   - ????
 	countryGeojsonIsLoaded: false,
 	
 	
@@ -300,16 +300,23 @@ let app = {
 	and stored it into app.countries[i].geojson?*/
 	countryGeojsonIsLoaded: false,
 	
-	/*🔥 Legend */
+	/*🔥 Legend for 5 data breaks */ 
 	colorLegend: {
 		labels: [ '0-24 Poor ', '25-49 Low', '50-74 Moderate',  '75-89 Good', '> 90 Excellent' ],
 		colors: [    '#bd0026',   '#9B4D00',        '#FFA500',     '#FFFF00',        '#32CD32' ],
 		levels: [            0,          25,               50,            75,               90 ]
 	},
+
+	/*🔥 Legend for 3 data breaks */
+//colorLegend: {
+ //   labels: ['Low', 'Medium', 'High'],
+//    colors: ['#9B4D00', '#FFA500', '#32CD32'], // Corresponding colors for low, medium, and high
+//    levels: [0, 50, 90] // Define the threshold levels for low, medium, and high
+//},
 	
 	// Currently selected index id 
 
-	selectedIndexId: null
+	selectedIndexId: null   // ?????
 }
 
 
@@ -369,7 +376,7 @@ function getColorLegendInfo(value) {
 			};
 		}
 	}
-	return { color: '#ccc', label: 'No Data' }; // Default if value is missing
+	return { color: '#ccc', label: 'No Data' }; // Default if value is missing ---???
 }
 
 /*--------------------------------------------------------------------
@@ -381,9 +388,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZWxlbmEtYW5pc2hjaCIsImEiOiJjbTVvN2podncwanJ5M
 const map = new mapboxgl.Map({
     container: 'map', // container in which the map will be rendered 
     style: 'mapbox://styles/mapbox/standard', // Map style
-    center: [15, 18], // Initial map center coordinates 
-    zoom: 2.5,
-    // maxBounds: [
+    //center: [15, 18], // Initial map center coordinates 
+   // zoom: 2.5,
+    // maxBounds: [                         -----???
     //     [140,0], // Southwest
     //     [25, 85]  // Northeast
     // ],
@@ -415,7 +422,7 @@ function mapAddLayer(layerId, geojsonProperty) {
 	
 	// Add each color level and its corresponding color from the color legend
 	for (let i = 0; i < app.colorLegend.colors.length; i++) {
-		// all arrays in app.colorLegend have the same length,
+		// all arrays in app.colorLegend have the same length,  ----????
 		// so can use same i to access them all
 		if (app.colorLegend.levels[i] != 0) // skip '0' level
 			colorLevelparam.push(app.colorLegend.levels[i]);
@@ -442,14 +449,14 @@ function mapAddLayer(layerId, geojsonProperty) {
 	});
 }
 
-// Function to zoom the map to a given level and coordinates 
+// Function to zoom the map to a given level and coordinates  ----??????
 
 function mapZoom(zoom, coords) {
 	if (zoom == undefined)
-		zoom = 3; // default zoom
+		zoom = 2.8; // default zoom
 
 	if (coords == undefined)
-		coords = [15, 10]; // default coordinates
+		coords = [20, 6.8]; // default coordinates
 	
 	map.flyTo({
 		center: coords,
@@ -464,6 +471,9 @@ map.on('load', () => {
         'type': 'vector',
         'url': 'mapbox://elena-anishch.99t49rnp'
     });
+
+
+	
 	
 	// create a map layer for each index
 	app.indices.forEach(index => mapAddLayer(index.id, index.geojsonKey));
@@ -596,11 +606,11 @@ function selectCountries() {
 	}
 
 	if (app.selectedIndexId === null) {
-		console.log("No layer selected. Skipping map filter update.");
+		console.log("No layer selected. Skipping map filter update."); // ---???????
 		return;
 	}
 
-	// build map filter to highlight the selected countries
+	// build map filter to highlight the selected countries  ---?????
 	let mapFilter;
 
 	if (selectedCountries.length == 0) // no countries selected
