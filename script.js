@@ -847,13 +847,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 	});
 	// });
 	//update:
-	const indexLabel = document.getElementById("selected-index-label");
 
 	document.querySelectorAll(".index-layer-checkbox").forEach(radio => {
 		radio.addEventListener("change", function () {
 			// set the toggle button text to the selected radio button' lebel
-			indexSelectBtn.textContent = this.nextElementSibling.textContent.trim();;
-		  document.getElementById("selected-index-label").textContent = this.nextElementSibling.textContent.trim();
+			document.getElementById("selected-index-label").textContent = this.nextElementSibling.textContent.trim();
 		});
 	});
 
