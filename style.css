@@ -375,35 +375,8 @@ form {
         width: 100%;
     }
 
-
-    /* NEW CODE FOR TESTING start  */
-    /* Adjust the position to avoid overlapping on smaller screens */
-    .compare {
-        bottom: 10px;  /* Move it up a bit */
-        right: 10px;   /* Move it closer to the edge */
-        font-size: 12px;  /* Make font smaller */
-    }
     
-    .compare h5 {
-        font-size: 14px;  /* Make the header font smaller */
-    }
-
-    .compare th {
-        font-size: 11px;  /* Smaller table header font */
-    }
     
-    /* Make the table more fluid on smaller screens */
-    .compare table {
-        width: 100%;  /* Ensure the table takes the full width */
-        overflow-x: auto;  /* Allow horizontal scrolling if necessary */
-        table-layout: auto;  /* Adjust column widths automatically */
-    }
-
-    /* Optionally, adjust column spacing and padding for smaller screens */
-    .compare td, .compare th {
-        padding: 8px;  /* Decrease padding */
-    }
-    /* NEW CODE FOR TESTING  end */
 }
 
 #stars {
