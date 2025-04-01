@@ -554,7 +554,164 @@ app.indices.forEach(function(index) {
 				}
 			}
 			popupContent += `</ol>` // Close the ordered list tag after all subindices have been processed 
+	
+			// barchart code block
+			// March 30th edit: Added a bar chart in each index's popup. 
+			// Debug: Log the full data object of the clicked country feature to the console
+			console.log("Full feature data:", feature.properties);
 
+			// CASE 1: If the selected index is a composite (Hydrogen+CCS, Hydrogen only, or CCS only)
+			if (['cihccs', 'cih', 'ciccs'].includes(index.id)) {
+				// Extract values from the feature's properties
+				let val_sp = feature.properties['Africa_c_7'];	// System Performance
+				let val_tr = feature.properties['Africa_c_8'];	// Transition Readiness
+				let val_ts = null;	// Tech-Specific (varies below)
+			
+				// Choose tech-specific value depending on the index
+				if (index.id === 'cihccs') {
+					val_ts = feature.properties['Africa_c14']; // TS H&CCS
+				} else if (index.id === 'cih') {
+					val_ts = feature.properties['Africa_c_9']; // TS Hydrogen
+				} else if (index.id === 'ciccs') {
+					val_ts = feature.properties['Africa_c10']; // TS CCS
+				}
+			
+				// Debug console logs to see exact math in dev tools
+				console.log(`[${index.name}] System Performance:`, val_sp, "* 0.45 =", val_sp * 0.45);
+				console.log(`[${index.name}] Transition Readiness:`, val_tr, "* 0.25 =", val_tr * 0.25);
+				console.log(`[${index.name}] Tech Specific:`, val_ts, "* 0.35 =", val_ts * 0.35);
+				console.log(`[${index.name}] Total Weighted Score:`, (val_sp * 0.45 + val_tr * 0.35 + val_ts * 0.25).toFixed(2));
+			
+				// Weighted values for each component
+				const weighted_sp = val_sp ? val_sp * 0.45 : 0;
+				const weighted_tr = val_tr ? val_tr * 0.35 : 0;
+				const weighted_ts = val_ts ? val_ts * 0.25 : 0;
+				const totalWeighted = (weighted_sp + weighted_tr + weighted_ts).toFixed(2);
+			
+				// Widths for each bar segment (in %, normalized)
+				const width_sp = (weighted_sp / 100) * 100;
+				const width_tr = (weighted_tr / 100) * 100;
+				const width_ts = (weighted_ts / 100) * 100;
+
+				// Update the final line in the bar chart popup legend (TS->TSHCCS, TS->TSH, and TS->TSCCS) based on which composite index is selected
+				// just added
+				let tsLabel = 'Tech Specific';
+				if (index.id === 'cihccs') tsLabel = 'TSHCCS';
+				else if (index.id === 'cih') tsLabel = 'TSH';
+				else if (index.id === 'ciccs') tsLabel = 'TSCCS';
+			
+				// Inject the composite index bar chart HTML into the popup <just added>
+				popupContent += `
+					<div style="margin-top: 15px;">
+						<div style="font-weight: bold; margin-bottom: 6px;">Composite Breakdown</div>
+			
+						<div style="display: flex; align-items: center;">
+							<div style="width: 180px; height: 16px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #aaa; display: flex;">
+								<div style="width: ${width_sp}%; background: #87ceeb; height: 100%" title="System Performance (${val_sp?.toFixed(2) ?? '--'})"></div>
+								<div style="width: ${width_tr}%; background: #f5b041; height: 100%" title="Transition Readiness (${val_tr?.toFixed(2) ?? '--'})"></div>
+								<div style="width: ${width_ts}%; background: #7dcea0; height: 100%" title="Tech Specific (${val_ts?.toFixed(2) ?? '--'})"></div>
+							</div>
+							<div style="margin-left: 8px; font-size: 12px; color: #444;">= ${totalWeighted}%</div>
+						</div>
+			
+						<div class="d-flex justify-content-between small text-muted mt-1" style="font-size: 12px;">
+							<span><span style="color:#87ceeb;">■</span> 45% SP</span>
+							<span><span style="color:#f5b041;">■</span> 25% TR</span>
+							<span><span style="color:#7dcea0;">■</span> 35% ${tsLabel}</span>
+						</div>
+					</div>
+				`;
+			}
+			
+			// CASE 2: If the selected index is System Performance only
+			if (index.id === 'sp') {
+				const val = feature.properties['Africa_c_7'];
+				const width = val ? val * 0.45 : 0;	// Apply 45% weight
+
+				// Append bar chart to popup
+				popupContent += `
+					<div style="margin-top: 15px;">
+						<div style="font-weight: bold; margin-bottom: 6px;">Index Weighting</div>
+						<div style="display: flex; align-items: center;">
+							<div style="width: 180px; height: 16px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #aaa;">
+								<div style="width: ${width}%; background: #87ceeb; height: 100%"></div>
+							</div>
+							<div style="margin-left: 8px; font-size: 12px; color: #444;">= ${width.toFixed(2)}% / 45%</div>
+						</div>
+					</div>
+				`;
+			}
+			
+			// CASE 3: Transition Readiness only
+			if (index.id === 'tr') {
+				const val = feature.properties['Africa_c_8'];
+				const width = val ? val * 0.35 : 0;	// Apply 25% weight
+				popupContent += `
+					<div style="margin-top: 15px;">
+						<div style="font-weight: bold; margin-bottom: 6px;">Index Weighting</div>
+						<div style="display: flex; align-items: center;">
+							<div style="width: 180px; height: 16px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #aaa;">
+								<div style="width: ${width}%; background: #f5b041; height: 100%"></div>
+							</div>
+							<div style="margin-left: 8px; font-size: 12px; color: #444;">= ${width.toFixed(2)}% / 25%</div>
+						</div>
+					</div>
+				`;
+			}
+			
+			// CASE 4: Tech-Specific Hydrogen & CCS (as its own index)
+			if (index.id === 'tshccs') {
+				const val = feature.properties['Africa_c14'];
+				const width = val ? val * 0.25 : 0;
+				popupContent += `
+					<div style="margin-top: 15px;">
+						<div style="font-weight: bold; margin-bottom: 6px;">Index Weighting</div>
+						<div style="display: flex; align-items: center;">
+							<div style="width: 180px; height: 16px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #aaa;">
+								<div style="width: ${width}%; background: #7dcea0; height: 100%"></div>
+							</div>
+							<div style="margin-left: 8px; font-size: 12px; color: #444;">= ${width.toFixed(2)}% / 35%</div>
+						</div>
+					</div>
+				`;
+			}
+			
+			// CASE 5: Tech-Specific CCS only
+			if (index.id === 'tsccs') {
+				const val = feature.properties['Africa_c10'];
+				const width = val ? val * 0.25 : 0;	// Apply 35% weight
+				popupContent += `
+					<div style="margin-top: 15px;">
+						<div style="font-weight: bold; margin-bottom: 6px;">Index Weighting</div>
+						<div style="display: flex; align-items: center;">
+							<div style="width: 180px; height: 16px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #aaa;">
+								<div style="width: ${width}%; background: #b5d99c; height: 100%"></div>
+							</div>
+							<div style="margin-left: 8px; font-size: 12px; color: #444;">= ${width.toFixed(2)}% / 35%</div>
+						</div>
+					</div>
+				`;
+			}
+
+			// CASE 6: Tech-Specific Hydrogen  (just added)
+			if (index.id === 'tsh') {
+				const val = feature.properties['Africa_c_9']; // pull from correct geojson key
+				const width = val ? val * 0.25 : 0; // Apply 35% weight
+			
+				// Append bar chart to popup
+				popupContent += `
+					<div style="margin-top: 15px;">
+						<div style="font-weight: bold; margin-bottom: 6px;">Index Weighting</div>
+						<div style="display: flex; align-items: center;">
+							<div style="width: 180px; height: 16px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #aaa;">
+								<div style="width: ${width}%; background: #70b8ff; height: 100%"></div>
+							</div>
+							<div style="margin-left: 8px; font-size: 12px; color: #444;">= ${width.toFixed(2)}% / 35%</div>
+						</div>
+					</div>
+				`;
+			}
+			// March 30th edit END --
 
 			// create a new mapbox popup at the location of the user's click event (e.lnglat)
 			const popup = new mapboxgl.Popup()
@@ -789,14 +946,20 @@ function updateComparisonTable() {
 }
 
 
-// Create index selection radio buttons for each index in the app.indices array
+// March 30th Edit: 
 // 🔥 Add instructional line at top of index menu
+// It shows the text "Select an Index" at the top of the dropdown menu
+// to guide users to pick an index layer they want to display on the map
+
 const instructionLine = document.createElement('div');
 instructionLine.className = 'text-muted small pb-2 ps-1';
-instructionLine.textContent = 'Select an Index';
-document.getElementById('index-select-menu').appendChild(instructionLine);
-// end
 
+instructionLine.textContent = 'Select an Index';			// Set the display text
+// Add this instruction text to the top of the index dropdown menu
+document.getElementById('index-select-menu').appendChild(instructionLine);
+// end// March 30th Edit END
+
+// Create index selection radio buttons for each index in the app.indices array
 // Create index selection radio buttons   - 
 app.indices.forEach(index => {
 	let html = `
@@ -890,26 +1053,56 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 	
 	updateButtonText(); // Update button text based on the selection
-	//🔥 Download button test
-	// add all other countries' xlsx file inside the country folder, with formating as [country].xlsx. then the file could be download by the user
-	const countries = ["Nigeria", "Kenya", "Rwanda", "Ethiopia", "Tanzania", "Ghana", "Nigeria", "Senegal"]; // Add all your actual file names here
+
+
+	
+// March 30th eidt
+	// DOWNLOAD MENU
+	// Purpose: Dynamically populate the download dropdown menu with links to Excel (.xlsx) files for each country
+	// Assumption: You’ve saved .xlsx files in a local folder named "countries" and named each file as [CountryName].xlsx
+	// Example: "./countries/Nigeria.xlsx", "./countries/Kenya.xlsx", etc.
+
+	// Step 1: List of countries you want in the dropdown
+	const countries = ["Nigeria", "Kenya", "Rwanda", "Ethiopia", "Tanzania", "Ghana", "Senegal"]; // Add all your actual file names here
   	const downloadMenu = document.getElementById("downloadMenu");
 
-  	countries.forEach(country => {
-		const listItem = document.createElement("li");
+  	// Step 2: Loop through each country and create a clickable <a> download link
+	countries.forEach(country => {
+		const listItem = document.createElement("li");	// Create <li> wrapper for the dropdown item
 
-		const link = document.createElement("a");
+		const link = document.createElement("a");	// Create <a> link element
 		link.className = "dropdown-item";
-		link.href = `./countries/${country}.xlsx`;
-		link.download = `${country}.xlsx`;
+		link.href = `./countries/${country}.xlsx`;	// File path to the downloadable file, change the folder name [countries] if you needed
+		link.download = `${country}.xlsx`;	// Hint browser to download the file instead of navigating
 		link.textContent = country;
 
 		listItem.appendChild(link);
 		downloadMenu.appendChild(listItem);
 	});
-	// 🔥
 
+	// Step 3: Add a separator just for visual clarity
+	const divider = document.createElement("li");
+	divider.innerHTML = '<hr class="dropdown-divider">';
+	downloadMenu.appendChild(divider);
+
+	// Step 4: Add Methodology Slides download option at the bottom
+	const methodologyItem = document.createElement("li");
+
+	const methodologyLink = document.createElement("a");
+	methodologyLink.className = "dropdown-item fw-bold"; // make it bold
+	methodologyLink.style.fontSize = "12px";		// font size
+	methodologyLink.href = "./countries/methodology.pdf"; // could update the file name and folder name, attention the methodology slides in the same folder of each country's file 
+	methodologyLink.download = "Methodology.pdf"; // File name when downloaded
+	methodologyLink.textContent = "Methodology"; // Display text in dropdown
+
+	methodologyItem.appendChild(methodologyLink);
+	downloadMenu.appendChild(methodologyItem);
+	// March 30th END -----------------------------------------------
+
+
+	
 	updateButtonText(); // Initial button update
+
 
 	// "Show comparison table" button click handler
 	document.getElementById('toggle-compare').addEventListener('click', function() {
@@ -922,38 +1115,59 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.querySelector(".page-loader").classList.add("init");
 	}, 2200); // this is the time the loader is displayed for 
 
+
+
+	// March 30th eidt
+	// Instrution turning page button
+	// Initialize the current page index (starts at page 0)
+
 	// 🔥 Turn page button test
+	// March 30th eidt
+	// Instrution turning page button
+	// Initialize the current page index (starts at page 0)
 	let currentPage = 0;
+	// Select all elements with the class 'instruction-page' (these are the instruction pages)
 	const pages = document.querySelectorAll('.instruction-page');
+	// Page indicator element that shows "Page X of Y"
 	const pageNumber = document.getElementById('pageNumber');
+	// ⬅️ Previous and ➡️ Next page navigation buttons
 	const prevPageBtn = document.getElementById('prevPage');
 	const nextPageBtn = document.getElementById('nextPage');
 
+	// Function to update which instruction page is visible
 	function updateInstructionPage() {
+		// // Loop through all pages and show only the one matching currentPage
 		pages.forEach((page, i) => {
 			page.style.display = i === currentPage ? 'block' : 'none';
 		});
 
+		// Update the text to show "X of Y" page info
 		pageNumber.textContent = `${currentPage + 1} of ${pages.length}`;
+
+		// Disable 'previous' button if on the first page
 		prevPageBtn.disabled = currentPage === 0;
+		// Disable 'next' button if on the last page
 		nextPageBtn.disabled = currentPage === pages.length - 1;
 	}
 
+	// Click for "Previous" button
 	prevPageBtn.addEventListener('click', () => {
 		if (currentPage > 0) {
-			currentPage--;
-			updateInstructionPage();
+			currentPage--;				// Move back one page
+			updateInstructionPage();	// Refresh the visible content
 		}
 	});
 
+	// Click for "Next" button
 	nextPageBtn.addEventListener('click', () => {
 		if (currentPage < pages.length - 1) {
-			currentPage++;
-			updateInstructionPage();
+			currentPage++;				// Move forward one page
+			updateInstructionPage();	// Refresh the visible content
 		}
 	});
 
-	updateInstructionPage(); // Initialize on load
+	updateInstructionPage(); // Initialize the first page on load
+	// March 30th eidt END --------------------------------------------------
 
 });
 
