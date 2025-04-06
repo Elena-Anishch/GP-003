@@ -250,7 +250,7 @@ let app = {
 	],
 
 	// Countries data for the application
-	
+
 	/*🔥 Could add more African Countries here*/
 	countries: [
 		{
@@ -261,59 +261,59 @@ let app = {
 		{
 			name: "Rwanda",
 			geojson: null,
-			is_selected: false			
+			is_selected: false
 		},
 		{
 			name: "Ethiopia",
 			geojson: null,
-			is_selected: false		
+			is_selected: false
 		},
 		{
 			name: "Tanzania",
 			geojson: null,
-			is_selected: false		
+			is_selected: false
 		},
 		{
 			name: "Ghana",
 			geojson: null,
-			is_selected: false		
+			is_selected: false
 		},
 		{
 			name: "Nigeria",
 			geojson: null,
-			is_selected: false		
+			is_selected: false
 		},
 		{
 			name: "Senegal",
 			geojson: null,
-			is_selected: false		
+			is_selected: false
 		}
 	],
-	
+
 	// Flag to track if country geojson is loaded   - comparison table will populate once this turns TRUE
 	countryGeojsonIsLoaded: false,
-	
-	
-    // Color legend for the application 
 
-	
-	/*🔥 Legend for 5 data breaks */ 
+
+	// Color legend for the application 
+
+
+	/*🔥 Legend for 5 data breaks */
 	colorLegend: {
-		labels: [ '0-24 Poor ', '25-49 Low', '50-74 Moderate',  '75-89 Good', '> 90 Excellent' ],
-		colors: [    '#bd0026',   '#9B4D00',        '#FFA500',     '#FFFF00',        '#32CD32' ],
-		levels: [            0,          25,               50,            75,               90 ]
+		labels: ['0-24 Poor ', '25-49 Low', '50-74 Moderate', '75-89 Good', '> 90 Excellent'],
+		colors: ['#bd0026', '#9B4D00', '#FFA500', '#FFFF00', '#32CD32'],
+		levels: [0, 25, 50, 75, 90]
 	},
 
 	/*🔥 Legend for 3 data breaks */
-//colorLegend: {
- //   labels: ['Low', 'Medium', 'High'],
-//    colors: ['#9B4D00', '#FFA500', '#32CD32'], // Corresponding colors for low, medium, and high
-//    levels: [0, 50, 90] // Define the threshold levels for low, medium, and high
-//},
-	
+	//colorLegend: {
+	//   labels: ['Low', 'Medium', 'High'],
+	//    colors: ['#9B4D00', '#FFA500', '#32CD32'], // Corresponding colors for low, medium, and high
+	//    levels: [0, 50, 90] // Define the threshold levels for low, medium, and high
+	//},
+
 	// Currently selected index id 
 
-	selectedIndexId: null   
+	selectedIndexId: null
 }
 
 
@@ -329,21 +329,21 @@ const legend = document.getElementById('legend');
 
 // Loop  through the color legend labels and colors and display them 
 app.colorLegend.labels.forEach((label, i) => {
-    const colour = app.colorLegend.colors[i];
+	const colour = app.colorLegend.colors[i];
 
-    const item = document.createElement('div'); // create a div for each legend item 
-    const key = document.createElement('span'); // create a span for the color key
+	const item = document.createElement('div'); // create a div for each legend item 
+	const key = document.createElement('span'); // create a span for the color key
 
-    key.className = 'legend-key';
-    key.style.backgroundColor = colour; // Set backgroun color based on the color legend
+	key.className = 'legend-key';
+	key.style.backgroundColor = colour; // Set backgroun color based on the color legend
 
-    const value = document.createElement('span'); // create a span for the label 
-    value.innerHTML = `${label}`;
+	const value = document.createElement('span'); // create a span for the label 
+	value.innerHTML = `${label}`;
 
-    item.appendChild(key);
-    item.appendChild(value);
+	item.appendChild(key);
+	item.appendChild(value);
 
-    legend.appendChild(item); // append the legend item to the legend
+	legend.appendChild(item); // append the legend item to the legend
 });
 
 // Change display of legend based on check box clicked 
@@ -351,14 +351,14 @@ app.colorLegend.labels.forEach((label, i) => {
 let legendcheck = document.getElementById('legendcheck');
 
 legendcheck.addEventListener('click', () => {
-    if (legendcheck.checked) {
-        legendcheck.checked = true;
-        legend.style.display = 'block'; // Show the legend when checked 
-    }
-    else {
-        legend.style.display = "none";
-        legendcheck.checked = false;  // Hide the legend when unchecked 
-    }
+	if (legendcheck.checked) {
+		legendcheck.checked = true;
+		legend.style.display = 'block'; // Show the legend when checked 
+	}
+	else {
+		legend.style.display = "none";
+		legendcheck.checked = false;  // Hide the legend when unchecked 
+	}
 });
 
 
@@ -383,9 +383,9 @@ MAPBOX MAP
 mapboxgl.accessToken = 'pk.eyJ1IjoiZWxlbmEtYW5pc2hjaCIsImEiOiJjbTVvN2podncwanJ5Mm1wbnNuczl6c214In0.2ltrEF0cJrURbPWpaKr9bg'; //***ADD YOUR ACCESS TOKEN HERE***
 
 const map = new mapboxgl.Map({
-    container: 'map', // container in which the map will be rendered 
-    style: 'mapbox://styles/mapbox/standard', // Map style
-    
+	container: 'map', // container in which the map will be rendered 
+	style: 'mapbox://styles/mapbox/standard', // Map style
+
 });
 
 // Navigation and fullscreen controls to the map
@@ -395,9 +395,9 @@ map.addControl(new mapboxgl.FullscreenControl());
 
 // Initialize geocoder for searching locations
 const geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl,
-    countries: "dz,ao,ben,bw,bf,bi,cm,cv,cf,td,km,cd,mg,ml,mr,ma,mu,na,ne,ng,sc,sl,so,za,ss,sd,tn,ug,zw,ke,lr,ly,mz,sn,sz,tz,tg,zm,ci,gh,et,rw,gn,gw,ls,zm,mw"
+	accessToken: mapboxgl.accessToken,
+	mapboxgl: mapboxgl,
+	countries: "dz,ao,ben,bw,bf,bi,cm,cv,cf,td,km,cd,mg,ml,mr,ma,mu,na,ne,ng,sc,sl,so,za,ss,sd,tn,ug,zw,ke,lr,ly,mz,sn,sz,tz,tg,zm,ci,gh,et,rw,gn,gw,ls,zm,mw"
 });
 
 // Add geocoder to the map's DOM 
@@ -411,7 +411,7 @@ function mapAddLayer(layerId, geojsonProperty) {
 	let colorLevelparam = [
 		'step', ['get', geojsonProperty], // get the property value for the geojson feature
 	];
-	
+
 	// Add each color level and its corresponding color from the color legend
 	for (let i = 0; i < app.colorLegend.colors.length; i++) {
 		// all arrays in app.colorLegend have the same length, /// if 4 colors 4 labels 
@@ -421,7 +421,7 @@ function mapAddLayer(layerId, geojsonProperty) {
 
 		colorLevelparam.push(app.colorLegend.colors[i]);
 	}
-	
+
 
 	// Adding a new layer to the map 
 
@@ -449,7 +449,7 @@ function mapZoom(zoom, coords) {
 
 	if (coords == undefined)
 		coords = [20, 6.8]; // default coordinates
-	
+
 	map.flyTo({
 		center: coords,
 		zoom: zoom,
@@ -459,14 +459,14 @@ function mapZoom(zoom, coords) {
 
 //Add data source and draw initial visiualization of layer
 map.on('load', () => {
-    map.addSource('africa-geojson', {
-        'type': 'vector',
-        'url': 'mapbox://elena-anishch.99t49rnp'
-    });
+	map.addSource('africa-geojson', {
+		'type': 'vector',
+		'url': 'mapbox://elena-anishch.99t49rnp'
+	});
 
 
-	
-	
+
+
 	// create a map layer for each index
 	app.indices.forEach(index => mapAddLayer(index.id, index.geojsonKey));
 
@@ -474,7 +474,7 @@ map.on('load', () => {
 	document.getElementById('returnbutton').addEventListener('click', () => {
 		mapZoom();
 	});
-	
+
 	// select and display the first index layer by default -this is where the selecte index is displayed on load ( first one)
 	document.getElementById('layercheck_' + app.indices[0].id).click();  // 0 indicates the first layer, you can select any number 
 
@@ -492,7 +492,7 @@ map.on('load', () => {
 
 // Add click events to each map layer that show a popup with details 
 
-app.indices.forEach(function(index) {
+app.indices.forEach(function (index) {
 	map.on('click', index.id, (e) => {
 		console.log(index.id + ' layer clicked')
 
@@ -502,8 +502,8 @@ app.indices.forEach(function(index) {
 		}
 
 		// zoom to the clicked area
-		mapZoom(4, e.lngLat);		
-		
+		mapZoom(4, e.lngLat);
+
 		// build and show the popup with information from the clicked feature 
 		const feature = e.features[0];
 
@@ -527,26 +527,26 @@ app.indices.forEach(function(index) {
 
 			// Check if the current index has any subindices available
 			// This checks whether the index object has a 'subindices' property to indicate additional data
-			 
+
 			if ('subindices' in index) {
 				// Loop through each subindex within the current index to add them to the popup content
 				for (let i = 0; i < index.subindices.length; i++) {
 					// Access the current subindex object in the subindices array
 					let si = index.subindices[i];
 					// Get the value of the subindex from the feature's properties using the geojsonKey of the subindex
-        // This looks for a corresponding key in the properties of the feature
+					// This looks for a corresponding key in the properties of the feature
 					let val = feature.properties[si.geojsonKey];
 					// If the subindex value is undefined or empty (""), display "--" to represent missing or unavailable data
 					if (val == undefined || val == "")
-						val = "--";  
+						val = "--";
 					else
 						val = val.toFixed(2); //if the index has a value, format it to two decimal places
-					 // Each subindex will be represented as a list item in an ordered list (<ol>) in the popup
+					// Each subindex will be represented as a list item in an ordered list (<ol>) in the popup
 					popupContent += `<li class="mb-1">${si.name}: ${val}</li>`; // add the subindex value to the popup content list 
 				}
 			}
 			popupContent += `</ol>` // Close the ordered list tag after all subindices have been processed 
-	
+
 			// barchart code block
 			// March 30th edit: Added a bar chart in each index's popup. 
 			// Debug: Log the full data object of the clicked country feature to the console
@@ -558,7 +558,7 @@ app.indices.forEach(function(index) {
 				let val_sp = feature.properties['Africa_c_7'];	// System Performance
 				let val_tr = feature.properties['Africa_c_8'];	// Transition Readiness
 				let val_ts = null;	// Tech-Specific (varies below)
-			
+
 				// Choose tech-specific value depending on the index
 				if (index.id === 'cihccs') {
 					val_ts = feature.properties['Africa_c14']; // TS H&CCS
@@ -567,19 +567,19 @@ app.indices.forEach(function(index) {
 				} else if (index.id === 'ciccs') {
 					val_ts = feature.properties['Africa_c10']; // TS CCS
 				}
-			
+
 				// Debug console logs to see exact math in dev tools
 				console.log(`[${index.name}] System Performance:`, val_sp, "* 0.45 =", val_sp * 0.45);
 				console.log(`[${index.name}] Transition Readiness:`, val_tr, "* 0.25 =", val_tr * 0.25);
 				console.log(`[${index.name}] Tech Specific:`, val_ts, "* 0.35 =", val_ts * 0.35);
 				console.log(`[${index.name}] Total Weighted Score:`, (val_sp * 0.45 + val_tr * 0.35 + val_ts * 0.25).toFixed(2));
-			
+
 				// Weighted values for each component
 				const weighted_sp = val_sp ? val_sp * 0.45 : 0;
 				const weighted_tr = val_tr ? val_tr * 0.35 : 0;
 				const weighted_ts = val_ts ? val_ts * 0.25 : 0;
 				const totalWeighted = (weighted_sp + weighted_tr + weighted_ts).toFixed(2);
-			
+
 				// Widths for each bar segment (in %, normalized)
 				const width_sp = (weighted_sp / 100) * 100;
 				const width_tr = (weighted_tr / 100) * 100;
@@ -591,7 +591,7 @@ app.indices.forEach(function(index) {
 				if (index.id === 'cihccs') tsLabel = 'TSHCCS';
 				else if (index.id === 'cih') tsLabel = 'TSH';
 				else if (index.id === 'ciccs') tsLabel = 'TSCCS';
-			
+
 				// Inject the composite index bar chart HTML into the popup <just added>
 				popupContent += `
 					<div style="margin-top: 15px;">
@@ -614,7 +614,7 @@ app.indices.forEach(function(index) {
 					</div>
 				`;
 			}
-			
+
 			// CASE 2: If the selected index is System Performance only
 			if (index.id === 'sp') {
 				const val = feature.properties['Africa_c_7'];
@@ -633,7 +633,7 @@ app.indices.forEach(function(index) {
 					</div>
 				`;
 			}
-			
+
 			// CASE 3: Transition Readiness only
 			if (index.id === 'tr') {
 				const val = feature.properties['Africa_c_8'];
@@ -650,7 +650,7 @@ app.indices.forEach(function(index) {
 					</div>
 				`;
 			}
-			
+
 			// CASE 4: Tech-Specific Hydrogen & CCS (as its own index)
 			if (index.id === 'tshccs') {
 				const val = feature.properties['Africa_c14'];
@@ -667,7 +667,7 @@ app.indices.forEach(function(index) {
 					</div>
 				`;
 			}
-			
+
 			// CASE 5: Tech-Specific CCS only
 			if (index.id === 'tsccs') {
 				const val = feature.properties['Africa_c10'];
@@ -689,7 +689,7 @@ app.indices.forEach(function(index) {
 			if (index.id === 'tsh') {
 				const val = feature.properties['Africa_c_9']; // pull from correct geojson key
 				const width = val ? val * 0.25 : 0; // Apply 35% weight
-			
+
 				// Append bar chart to popup
 				popupContent += `
 					<div style="margin-top: 15px;">
@@ -712,10 +712,10 @@ app.indices.forEach(function(index) {
 				.addTo(map); // add the popup to the map 
 
 			// remove popup when controls are clicked
-			document.getElementById("select-index").addEventListener("click", function() {
+			document.getElementById("select-index").addEventListener("click", function () {
 				popup.remove();
 			});
-			document.getElementById("select-country").addEventListener("click", function() {
+			document.getElementById("select-country").addEventListener("click", function () {
 				popup.remove(); // close the popup when the "select-country" contol is clicked
 			});
 		}
@@ -724,7 +724,7 @@ app.indices.forEach(function(index) {
 
 
 /*--------------------------------------------------------------------
-USER CONTROLS
+ MAP LAYER AND COUNTRY SELECTION CONTROLS:
 --------------------------------------------------------------------*/
 // function to manage visibility of map layers when an index is selected by the user 
 function selectIndex(e, id) {
@@ -740,7 +740,7 @@ function selectIndex(e, id) {
 	if (checkbox.checked) {
 		map.setLayoutProperty(id, 'visibility', 'visible');
 		app.selectedIndexId = id;
-		mapZoom();     
+		mapZoom();
 	}
 }
 
@@ -748,16 +748,16 @@ function selectIndex(e, id) {
 function selectCountries() {
 	let selectedCountries = []
 	let countryCheckboxes = document.querySelectorAll(".country-layer-checkbox");
-	
+
 	for (var i = 0; i < countryCheckboxes.length; i++) {
 		app.countries[i].is_selected = countryCheckboxes[i].checked;
-		
+
 		if (app.countries[i].is_selected)
 			selectedCountries.push(app.countries[i].name);
 	}
 
 	if (app.selectedIndexId === null) {
-		console.log("No layer selected. Skipping map filter update."); 
+		console.log("No layer selected. Skipping map filter update.");
 		return;
 	}
 
@@ -775,47 +775,61 @@ function selectCountries() {
 }
 
 
+/*--------------------------------------------------------------------
+COMPARE TABLE
+--------------------------------------------------------------------*/
+
 // function updates and generates the comparison table with data from the selected index and countries
 function updateComparisonTable() {
 	// Get the div where the comparison table will be inserted
 	const tableDiv = document.getElementById("compare");
-	
+
 	// Clear any previous content in the comparison table and set a loading message
-	tableDiv.innerHTML = '<h5 class="text-center">Comparison table: data not loaded</h5>'; 	
+	tableDiv.innerHTML = '<h5 class="text-center">Comparison table: data not loaded</h5>';
 	// Check if the necessary geojson data is loaded or if an index is selected
 	if (!app.countryGeojsonIsLoaded || app.selectedIndexId === null)
 		return; // If data or index isn't available, exit the function
-	
-	// Find the selected index data based on the selected index ID
+
+	// Find the selected indices data based on the selected index ID
 	let selectedIndex;
-	
+
+	// Loop through the list of indices to find the one that matches the selected index ID
 	for (var i = 0; i < app.indices.length; i++) {
-		if (app.indices[i].id == app.selectedIndexId) {
+		if (app.indices[i].id == app.selectedIndexId) {   // Check if the current index ID matches the selected index ID
 			selectedIndex = app.indices[i]; // Store the selected index data
-			break;
+			break; // Exit the loop since the selected index has been found
 		}
 	}
 
-	// Begin building the table HTML
+	// Initialize the HTML content for the table by adding the title with the selected index's name
+	// This creates a centered heading for the comparison table, dynamically displaying the selected index's name
 	let html = `<h4 class="text-center">Comparison table: ${selectedIndex.name}</h4>`
+	// Start building the table structure by adding the opening <table> tag with Bootstrap classes
+	// - "table" class applies basic table styling
+	// - "table-bordered" adds borders around the table cells
+	// - "text-center" centers the text within the table cells
+	// - "table-hover" adds a hover effect to table rows for better interactivity
 	html += '<table class="table table-bordered text-center table-hover">';
-	
-	// Build the table header
+
+	// Begin building the table header by adding the opening <thead> and <tr> tags
+	// These tags define the header section and the row for the table columns
 	html += '<thead><tr>'
-	html += '<th scope="col" class="text-start bg-light">Index</th>'
+	// Add the first header cell for the "Index" column
+	// This will be the label for the first column in the table, which displays the index name
+	html += '<th scope="col" class="text-start bg-light">Index</th>' // First column for the index name
 	// Loop through all countries and add their names as column headers, if they are selected
 	app.countries.forEach(country => {
 		if (country.is_selected)
-			html += `<th scope="col" class="bg-light">${country.name}</th>`
+			html += `<th scope="col" class="bg-light">${country.name}</th>`   // Add the country name as a column header for each selected country
 	});
-	html += '</tr></thead>'
-	
-	// Begin building the table body
+	html += '</tr></thead>'  // Close the table row and header section
+
+	// Begin building the table body where index values for countries will be displayed
 	html += '<tbody>'
-	
-	// First row: Add the selected index to the first column
+
+	// First row: Add the selected index name to the first column of the row
 	html += '<tr>'
-	html += `<th scope="row" class="text-start">${selectedIndex.name}</th>`
+	html += `<th scope="row" class="text-start">${selectedIndex.name}</th>` // Row label for the selected index
 
 	// Loop through the selected countries and populate the table with values for the selected index
 	app.countries.forEach(country => {
@@ -827,7 +841,7 @@ function updateComparisonTable() {
 				val = "--";
 			else
 				val = val.toFixed(2);
-			
+
 			// Add a table cell with the value and corresponding color
 			html += '<td class="position-relative">';
 			html += `<div style="background-color: ${color};" class="h-100 opacity-50 w-100 position-absolute start-0 top-0"></div>`;
@@ -835,11 +849,11 @@ function updateComparisonTable() {
 			html += '</td>';
 		}
 	});
-	
+
 	html += '</tr>'
-	
+
 	// Add rows for each sub-index if they exist
-	if (selectedIndex.subindices){		
+	if (selectedIndex.subindices) {
 		for (var i = 0; i < selectedIndex.subindices.length; i++) {
 			html += '<tr>'
 			html += `<td scope="row" class="text-start">${i + 1}. ${selectedIndex.subindices[i].name}</td>`
@@ -847,7 +861,7 @@ function updateComparisonTable() {
 				if (country.is_selected) {
 					let val = country.geojson[selectedIndex.subindices[i].geojsonKey];
 					let color = getColorLegendInfo(val).color;
-					
+
 					// If the sub-index value is undefined, set it to "--" and the color to white
 					if (val == undefined || val == "") {
 						val = "--";
@@ -867,26 +881,35 @@ function updateComparisonTable() {
 	}
 
 	// ADD NEW ROWS: Population, Area, Population Density
+
 	// Population row
+	// Start the Population row
 	html += '<tr>';
+	// Add the label for the Population row, aligned to the left using Bootstrap's text-start class
+	// Bootstrap's "text-start" class aligns the content to the left 
 	html += `<td scope="row" class="text-start">Population</td>`;
+
+	// Loop through the countries to add the population data
 	app.countries.forEach(country => {
+		// Check if the country is selected
 		if (country.is_selected) {
-			let val = country.geojson["Africa_c_6"]; // Population field
-			
+			let val = country.geojson["Africa_c_6"]; // Population field - // Get the population value from the "Africa_c_6" field in the country's geojson data
+
 			// If the value is undefined, set it to "--"
 			if (val == undefined || val == "") {
 				val = "--";
 			} else {
-				val = val.toLocaleString(); // Add a thousand separator for better readability
+				// Otherwise, format the population value with a thousand separator for better readability
+				val = val.toLocaleString(); // Formats number with locale-specific thousand separators
 			}
-			
-			html += '<td>';
-			html += `<div class="position-relative">${val}</div>`; // No background color
+
+			html += '<td>'; // Add the formatted population value into the table cell
+			html += `<div class="position-relative">${val}</div>`; // no background color
 			html += '</td>';
 		}
 	});
-	html += '</tr>';
+
+	html += '</tr>';  // Close the Population row
 
 	// Area row
 	html += '<tr>';
@@ -894,16 +917,16 @@ function updateComparisonTable() {
 	app.countries.forEach(country => {
 		if (country.is_selected) {
 			let val = country.geojson["Africa_c31"]; // Area field
-			
+
 			// If the value is undefined, set it to "--"
 			if (val == undefined || val == "") {
 				val = "--";
 			} else {
-				val = val.toLocaleString(); // Add a thousand separator
+				val = val.toLocaleString();
 			}
-			
+
 			html += '<td>';
-			html += `<div class="position-relative">${val}</div>`; // No background color
+			html += `<div class="position-relative">${val}</div>`;
 			html += '</td>';
 		}
 	});
@@ -915,14 +938,14 @@ function updateComparisonTable() {
 	app.countries.forEach(country => {
 		if (country.is_selected) {
 			let val = country.geojson["Africa_c32"]; // Population Density field
-			
+
 			// If the value is undefined, set it to "--"
 			if (val == undefined || val == "") {
 				val = "--";
 			} else {
 				val = val.toFixed(2); // Format to two decimal places
 			}
-			
+
 			html += '<td>';
 			html += `<div class="position-relative">${val}</div>`; // No background color
 			html += '</td>';
@@ -952,7 +975,6 @@ document.getElementById('index-select-menu').appendChild(instructionLine);
 // end// March 30th Edit END
 
 // Create index selection radio buttons for each index in the app.indices array
-// Create index selection radio buttons   - 
 app.indices.forEach(index => {
 	let html = `
 		<div class="form-check mb-2">
@@ -960,14 +982,14 @@ app.indices.forEach(index => {
             <label class="form-check-label" for="layercheck_${index.id}">${index.name}</label>
         </div>`;
 	let div = document.createElement('div');
-	
+
 	div.innerHTML = html;
 	div.addEventListener('change', (e) => {
 		selectIndex(e, index.id); // Trigger index selection
 		selectCountries(); // Trigger country selection
 		updateComparisonTable(); // Update the comparison table
 	});
-	
+
 	// Append the radio button to the index selection menu
 	document.getElementById('index-select-menu').appendChild(div);
 });
@@ -980,7 +1002,7 @@ app.countries.forEach(country => {
 			<label class="form-check-label" for="${country.name}">${country.name}</label>
 		</div>`;
 	let div = document.createElement('div');
-	
+
 	div.innerHTML = html;
 	div.addEventListener('change', (e) => {
 		selectCountries(); // Trigger country selection
@@ -1043,12 +1065,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			updateButtonText();
 		});
 	});
-	
+
 	updateButtonText(); // Update button text based on the selection
 
 
-	
-// March 30th eidt
+
+	// March 30th eidt
 	// DOWNLOAD MENU
 	// Purpose: Dynamically populate the download dropdown menu with links to Excel (.xlsx) files for each country
 	// Assumption: You’ve saved .xlsx files in a local folder named "countries" and named each file as [CountryName].xlsx
@@ -1056,9 +1078,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Step 1: List of countries you want in the dropdown
 	const countries = ["Nigeria", "Kenya", "Rwanda", "Ethiopia", "Tanzania", "Ghana", "Senegal"]; // Add all your actual file names here
-  	const downloadMenu = document.getElementById("downloadMenu");
+	const downloadMenu = document.getElementById("downloadMenu");
 
-  	// Step 2: Loop through each country and create a clickable <a> download link
+	// Step 2: Loop through each country and create a clickable <a> download link
 	countries.forEach(country => {
 		const listItem = document.createElement("li");	// Create <li> wrapper for the dropdown item
 
@@ -1092,26 +1114,22 @@ document.addEventListener("DOMContentLoaded", function () {
 	// March 30th END -----------------------------------------------
 
 
-	
+
 	updateButtonText(); // Initial button update
 
 
 	// "Show comparison table" button click handler
-	document.getElementById('toggle-compare').addEventListener('click', function() {
+	document.getElementById('toggle-compare').addEventListener('click', function () {
 		// Toggle the visibility of the compare table div
 		document.getElementById('compare').classList.toggle('d-none'); // 'd-none' is a Bootstrap class that hides the element
 	});
 
 	// Loader animation: hide after a timeout
-	setTimeout(function() {
+	setTimeout(function () {
 		document.querySelector(".page-loader").classList.add("init");
 	}, 2200); // this is the time the loader is displayed for 
 
 
-
-	// March 30th eidt
-	// Instrution turning page button
-	// Initialize the current page index (starts at page 0)
 
 	// 🔥 Turn page button test
 	// March 30th eidt
@@ -1175,25 +1193,25 @@ map.on('idle', () => {
 	// querySourceFeatures() before a map layer is enabled and has finished
 	// rendering. We only need to load the data once, so we can refer to
 	// it later when updating the comparison table
-	
+
 	if (!app.countryGeojsonIsLoaded) {
 		let success = true;
-	   	// fetch geojson data for each country
+		// fetch geojson data for each country
 		for (var i = 0; i < app.countries.length; i++) {
 			let geojson = map.querySourceFeatures('africa-geojson',
 				{
 					sourceLayer: 'AfricaProjectFileZip-04v9i9',
 					filter: ["==", "NAME", app.countries[i].name]
 				});
-			
+
 			if (geojson.length == 0) {
 				success = false; // could not read the data, exit
 				break;
 			}
-			
+
 			app.countries[i].geojson = geojson[0].properties; // Store the geojson data
 		}
-		
+
 		if (success) {
 			app.countryGeojsonIsLoaded = true;
 			updateComparisonTable(); // Update the comparison table once the geojson data is loaded
