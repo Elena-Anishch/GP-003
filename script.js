@@ -1,6 +1,5 @@
 /*--------------------------------------------------------------------
-GGR472 WEEK 8: JavaScript for Web Maps
-Adding elements and interactivity to the map (JavaScript legend and events)
+GGR472 Group Project - CATF - GROUP 8 
 --------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
@@ -291,14 +290,12 @@ let app = {
 		}
 	],
 	
-	// Flag to track if country geojson is loaded   - ???? - comparison table will populate once this turns TRUE
+	// Flag to track if country geojson is loaded   - comparison table will populate once this turns TRUE
 	countryGeojsonIsLoaded: false,
 	
 	
     // Color legend for the application 
-	/*🔥 keep track of whether the country-level GeoJSON data has already been loaded from the map.
-	and stored it into app.countries[i].geojson?*/
-	//countryGeojsonIsLoaded: false,
+
 	
 	/*🔥 Legend for 5 data breaks */ 
 	colorLegend: {
@@ -388,12 +385,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZWxlbmEtYW5pc2hjaCIsImEiOiJjbTVvN2podncwanJ5M
 const map = new mapboxgl.Map({
     container: 'map', // container in which the map will be rendered 
     style: 'mapbox://styles/mapbox/standard', // Map style
-    //center: [15, 18], // Initial map center coordinates 
-   // zoom: 2.5,
-    // maxBounds: [                         -----???
-    //     [140,0], // Southwest
-    //     [25, 85]  // Northeast
-    // ],
+    
 });
 
 // Navigation and fullscreen controls to the map
