@@ -313,7 +313,7 @@ let app = {
 	
 	// Currently selected index id 
 
-	selectedIndexId: null   // ?????
+	selectedIndexId: null   
 }
 
 
@@ -441,7 +441,7 @@ function mapAddLayer(layerId, geojsonProperty) {
 	});
 }
 
-// Function to zoom the map to a given level and coordinates  ----??????
+// Function to zoom the map to a given level and coordinates  
 
 function mapZoom(zoom, coords) {
 	if (zoom == undefined)
@@ -740,7 +740,7 @@ function selectIndex(e, id) {
 	if (checkbox.checked) {
 		map.setLayoutProperty(id, 'visibility', 'visible');
 		app.selectedIndexId = id;
-		mapZoom();    ///// ?????? does it actually do anything???? reset to default zoom when new index selected 
+		mapZoom();     
 	}
 }
 
@@ -757,11 +757,11 @@ function selectCountries() {
 	}
 
 	if (app.selectedIndexId === null) {
-		console.log("No layer selected. Skipping map filter update."); // ---???????
+		console.log("No layer selected. Skipping map filter update."); 
 		return;
 	}
 
-	// build map filter to highlight the selected countries  ---?????
+	// build map filter to highlight the selected countries  
 	let mapFilter;
 
 	if (selectedCountries.length == 0) // no countries selected
