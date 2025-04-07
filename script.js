@@ -548,7 +548,7 @@ app.indices.forEach(function (index) {
 			popupContent += `</ol>` // Close the ordered list tag after all subindices have been processed 
 
 			// barchart code block
-			// March 30th edit: Added a bar chart in each index's popup. 
+			// Added a bar chart in each index's popup. 
 			// Debug: Log the full data object of the clicked country feature to the console
 			console.log("Full feature data:", feature.properties);
 
@@ -703,7 +703,7 @@ app.indices.forEach(function (index) {
 					</div>
 				`;
 			}
-			// March 30th edit END --
+			
 
 			// create a new mapbox popup at the location of the user's click event (e.lnglat)
 			const popup = new mapboxgl.Popup()
@@ -961,7 +961,7 @@ function updateComparisonTable() {
 }
 
 
-// March 30th Edit: 
+
 // 🔥 Add instructional line at top of index menu
 // It shows the text "Select an Index" at the top of the dropdown menu
 // to guide users to pick an index layer they want to display on the map
@@ -972,7 +972,7 @@ instructionLine.className = 'text-muted small pb-2 ps-1';
 instructionLine.textContent = 'Select an Index';			// Set the display text
 // Add this instruction text to the top of the index dropdown menu
 document.getElementById('index-select-menu').appendChild(instructionLine);
-// end// March 30th Edit END
+
 
 // Create index selection radio buttons for each index in the app.indices array
 app.indices.forEach(index => {
@@ -1070,7 +1070,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-	// March 30th eidt
+	
 	// DOWNLOAD MENU
 	// Purpose: Dynamically populate the download dropdown menu with links to Excel (.xlsx) files for each country
 	// Assumption: You’ve saved .xlsx files in a local folder named "countries" and named each file as [CountryName].xlsx
@@ -1111,7 +1111,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	methodologyItem.appendChild(methodologyLink);
 	downloadMenu.appendChild(methodologyItem);
-	// March 30th END -----------------------------------------------
+
 
 
 
@@ -1132,7 +1132,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 	// 🔥 Turn page button test
-	// March 30th eidt
+	
 	// Instrution turning page button
 	// Initialize the current page index (starts at page 0)
 	let currentPage = 0;
@@ -1177,7 +1177,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	updateInstructionPage(); // Initialize the first page on load
-	// March 30th eidt END --------------------------------------------------
+
 
 });
 
